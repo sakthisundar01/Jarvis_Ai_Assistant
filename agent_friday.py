@@ -30,13 +30,13 @@ from livekit.plugins import google as lk_google, openai as lk_openai, sarvam, si
 
 STT_PROVIDER       = "sarvam"
 LLM_PROVIDER       = "gemini"
-TTS_PROVIDER       = "openai"
+TTS_PROVIDER       = "deepgram"
 
-GEMINI_LLM_MODEL   = "gemini-2.5-flash"
+GEMINI_LLM_MODEL   = "gemini-2.5-flash-lite"
 OPENAI_LLM_MODEL   = "gpt-4o"
 
 OPENAI_TTS_MODEL   = "tts-1"
-OPENAI_TTS_VOICE   = "nova"       # "nova" has a clean, confident female tone
+OPENAI_TTS_VOICE   = "meera"       # "nova" has a clean, confident female tone
 TTS_SPEED           = 1.15
 
 SARVAM_TTS_LANGUAGE = "en-IN"
@@ -222,6 +222,10 @@ def _build_tts():
     elif TTS_PROVIDER == "openai":
         logger.info("TTS → OpenAI TTS (%s / %s)", OPENAI_TTS_MODEL, OPENAI_TTS_VOICE)
         return lk_openai.TTS(model=OPENAI_TTS_MODEL, voice=OPENAI_TTS_VOICE, speed=TTS_SPEED)
+    elif TTS_PROVIDER == "deepgram":
+        from livekit.plugins import deepgram
+        logger.info("TTS → Deepgram Aura (asteria-en)")
+        return deepgram.TTS(model="aura-asteria-en")
     else:
         raise ValueError(f"Unknown TTS_PROVIDER: {TTS_PROVIDER!r}")
 
